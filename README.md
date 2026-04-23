@@ -104,6 +104,12 @@ Plataforma **full stack** com **Next.js + Nest.js**, **Docker**, **MongoDB**, **
 ![Lucide](https://img.shields.io/badge/Lucide_Icons-F56565?style=flat-square&logo=lucide&logoColor=white)
 ![Recharts](https://img.shields.io/badge/Recharts-22B5BF?style=flat-square)
 
+### **Backend & Autenticação**
+![Auth.js](https://img.shields.io/badge/Auth.js_(NextAuth_v5)-000000?style=flat-square&logo=auth0&logoColor=white)
+![Neon](https://img.shields.io/badge/Neon_Postgres-00E599?style=flat-square&logo=postgresql&logoColor=white)
+![bcrypt](https://img.shields.io/badge/bcrypt-003A70?style=flat-square)
+![Google OAuth](https://img.shields.io/badge/Google_OAuth_2.0-4285F4?style=flat-square&logo=google&logoColor=white)
+
 ### **Ferramentas**
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=white)
 ![PostCSS](https://img.shields.io/badge/PostCSS-DD3A0A?style=flat-square&logo=postcss&logoColor=white)
@@ -118,34 +124,60 @@ Plataforma **full stack** com **Next.js + Nest.js**, **Docker**, **MongoDB**, **
 ```bash
 Meu-Portifolio/
 ├─ app/                     # Rotas (Next.js App Router)
-│  ├─ about/                # Sobre
-│  ├─ blog/                 # Blog
-│  ├─ certificates/         # Certificados
-│  ├─ contact/              # Contato
-│  ├─ education/            # Formação
-│  ├─ experience/           # Experiência
-│  ├─ projects/             # Projetos
-│  ├─ skills/               # Habilidades
-│  ├─ globals.css           # Estilos globais
-│  ├─ layout.tsx            # Layout raiz
-│  └─ page.tsx              # Página inicial
+│  ├─ api/
+│  │  ├─ auth/[...nextauth]/route.ts  # Handlers Auth.js
+│  │  └─ register/route.ts            # POST /api/register
+│  ├─ login/                # Página de login
+│  ├─ register/             # Página de cadastro
+│  ├─ about/ blog/ certificates/ ...  # Seções do portfólio
+│  ├─ globals.css
+│  ├─ layout.tsx
+│  └─ page.tsx
 ├─ components/
+│  ├─ auth/                 # UserMenu, GoogleButton
 │  ├─ home/                 # Seções da home
 │  ├─ layout/               # Navbar, Footer
 │  ├─ ui/                   # Design system (shadcn/ui)
+│  ├─ providers.tsx         # SessionProvider wrapper
 │  └─ theme-provider.tsx
-├─ hooks/
-│  └─ use-toast.ts
 ├─ lib/
-│  ├─ constants.ts          # Dados do portfólio (projetos, skills, etc.)
-│  ├─ motion.ts             # Presets de animação
+│  ├─ validations/auth.ts   # Schemas Zod (login, register)
+│  ├─ constants.ts          # Dados do portfólio
+│  ├─ db.ts                 # Cliente Neon
+│  ├─ users.ts              # Queries SQL (find, create, upsert)
+│  ├─ motion.ts
 │  └─ utils.ts
-├─ public/                  # Assets estáticos (cv.pdf, sw.js)
-├─ assets/                  # Imagens dos projetos
+├─ scripts/
+│  └─ schema.sql            # DDL inicial (tabela users)
+├─ types/
+│  └─ next-auth.d.ts        # Extensão da Session (campo id)
+├─ auth.ts                  # Config NextAuth (Google + Credentials)
+├─ .env.example             # Modelo de variáveis de ambiente
 ├─ next.config.js
 ├─ tailwind.config.ts
 └─ tsconfig.json
 ```
+
+---
+
+## 🔐 Autenticação & API
+
+O portfólio também inclui um sistema completo de autenticação e cadastro de usuários, rodando direto no Next.js via **API Routes**:
+
+- 🔑 **Login com Google** (OAuth 2.0 via Auth.js / NextAuth v5)
+- 📝 **Cadastro manual** com e-mail e senha (bcrypt, 12 rounds)
+- 💾 **Persistência em Neon Postgres** (serverless)
+- 🛡️ **Validação com Zod** em client e server
+- 🔒 **JWT** assinado para sessões (7 dias)
+
+### **Rotas adicionadas**
+
+| Rota | Tipo | Descrição |
+|:---|:---|:---|
+| `/login` | Página | Login com Google ou e-mail/senha |
+| `/register` | Página | Cadastro de nova conta |
+| `/api/auth/[...nextauth]` | API | Handlers do Auth.js (Google + Credentials) |
+| `/api/register` | API | `POST` — cria usuário com senha hasheada |
 
 ---
 
@@ -157,24 +189,68 @@ Meu-Portifolio/
 ![npm](https://img.shields.io/badge/npm-9+-CB3837?style=flat-square&logo=npm&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-Latest-F05032?style=flat-square&logo=git&logoColor=white)
 
-### **Instalação**
+### **1. Clone e instale**
 
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/GuilhermeMeneguellis/Meu-Portifolio.git
-
-# 2. Acesse a pasta do projeto
 cd Meu-Portifolio
-
-# 3. Instale as dependências
 npm install
-
-# 4. Rode o servidor de desenvolvimento
-npm run dev
-
-# 5. Abra no navegador
-# http://localhost:3000
 ```
+
+### **2. Configure o banco Neon**
+
+```bash
+# Cria projeto no Neon e grava DATABASE_URL no .env automaticamente
+npx neonctl@latest init
+```
+
+Depois rode o schema inicial — no **Neon Console → SQL Editor**, cole e execute o conteúdo de [scripts/schema.sql](scripts/schema.sql). Ou via psql:
+
+```bash
+psql "$DATABASE_URL" -f scripts/schema.sql
+```
+
+### **3. Configure o Google OAuth**
+
+1. Acesse o [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials)
+2. **OAuth consent screen** → configure (External, publique)
+3. **Create Credentials → OAuth client ID → Web application**
+4. Adicione as URIs autorizadas:
+   - **JavaScript origins:** `http://localhost:3000` (+ URL de produção)
+   - **Redirect URIs:** `http://localhost:3000/api/auth/callback/google` (+ a de produção)
+5. Copie `Client ID` e `Client Secret`
+
+### **4. Variáveis de ambiente**
+
+```bash
+cp .env.example .env.local
+```
+
+Preencha no `.env.local`:
+
+```env
+AUTH_SECRET=                # openssl rand -base64 32
+AUTH_GOOGLE_ID=             # do passo 3
+AUTH_GOOGLE_SECRET=         # do passo 3
+DATABASE_URL=               # do passo 2 (neonctl preenche automaticamente)
+```
+
+### **5. Rode o projeto**
+
+```bash
+npm run dev
+# Abra http://localhost:3000
+```
+
+---
+
+## 🚀 Deploy na Vercel
+
+1. Faça push do projeto pro GitHub
+2. Conecte o repo em [vercel.com/new](https://vercel.com/new)
+3. Em **Environment Variables**, adicione: `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `DATABASE_URL`, `AUTH_TRUST_HOST=true`
+4. No **Google Cloud Console**, adicione a URL de produção às origens e redirect URIs autorizados
+5. Deploy ✅
 
 ---
 
