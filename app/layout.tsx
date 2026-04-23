@@ -1,13 +1,24 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Fraunces } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { Providers } from '@/components/providers';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+	subsets: ['latin'],
+	variable: '--font-sans',
+	display: 'swap',
+});
+
+const fraunces = Fraunces({
+	subsets: ['latin'],
+	variable: '--font-display',
+	display: 'swap',
+	axes: ['opsz', 'SOFT'],
+});
 
 export const metadata: Metadata = {
 	title: 'Guilherme Meneguelli - Portfolio',
@@ -20,7 +31,11 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="pt-BR" suppressHydrationWarning>
+		<html
+			lang="pt-BR"
+			suppressHydrationWarning
+			className={`${inter.variable} ${fraunces.variable}`}
+		>
 			<link rel="shortcut icon" href="https://cdn-icons-png.freepik.com/256/12539/12539811.png" type="image/x-icon" />
 			<body className={inter.className}>
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>

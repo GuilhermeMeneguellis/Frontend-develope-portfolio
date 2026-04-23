@@ -47,9 +47,12 @@ export function Navbar() {
 					<Link href="/" className="flex items-center space-x-2">
 						<motion.div
 							whileHover={{ scale: 1.05 }}
-							className="font-bold text-2xl text-gradient"
+							className="font-display text-2xl tracking-tight text-foreground"
 						>
-							Guilherme Meneguelli
+							Guilherme{' '}
+							<span className="italic font-normal text-foreground/90">
+								Meneguelli
+							</span>
 						</motion.div>
 					</Link>
 					<nav className="hidden md:flex gap-6">
@@ -79,7 +82,12 @@ export function Navbar() {
 						<SheetContent className="flex flex-col p-6">
 							<div className="flex items-center justify-between mb-8">
 								<Link href="/" className="flex items-center space-x-2">
-									<span className="font-bold text-2xl text-gradient">Guilherme Meneguelli</span>
+									<span className="font-display text-2xl tracking-tight text-foreground">
+										Guilherme{' '}
+										<span className="italic font-normal text-foreground/90">
+											Meneguelli
+										</span>
+									</span>
 								</Link>
 							</div>
 							<nav className="flex flex-col gap-4">

@@ -1,50 +1,17 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, FileDown } from 'lucide-react';
-import * as THREE from 'three';
-import NET from 'vanta/dist/vanta.net.min';
 
 import { Button } from '@/components/ui/button';
+import { LavaBackground } from '@/components/ui/lava-background';
 import { fadeIn, staggerContainer } from '@/lib/motion';
 
 export function HeroSection() {
-	const [vantaEffect, setVantaEffect] = useState<any>(null);
-	const vantaRef = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		if (!vantaEffect && vantaRef.current) {
-			setVantaEffect(
-				NET({
-					el: vantaRef.current,
-					THREE: THREE,
-					mouseControls: true,
-					touchControls: true,
-					gyroControls: false,
-					minHeight: 200.00,
-					minWidth: 200.00,
-					scale: 0.8,
-					scaleMobile: 0.8,
-					color: 0xff3f81,
-					backgroundColor: 0x23153c,
-					points: 10.00,
-					maxDistance: 15.00,
-					spacing: 20.00,
-					showDots: false,
-				})
-			);
-		}
-		return () => {
-			if (vantaEffect) vantaEffect.destroy();
-		};
-	}, [vantaEffect]);
-
 	return (
 		<section className="relative overflow-hidden">
-			{/* Vanta.js Background */}
-			<div ref={vantaRef} className="absolute inset-0 z-0 opacity-60" />
+			<LavaBackground />
 
 			{/* Content */}
 			<div className="container relative z-10 px-4 py-20 md:py-32 flex flex-col items-center justify-center min-h-[90vh]">
@@ -52,25 +19,37 @@ export function HeroSection() {
 					variants={staggerContainer()}
 					initial="hidden"
 					animate="show"
-					className="max-w-3xl mx-auto text-center"
+					className="max-w-3xl mx-auto text-center rounded-3xl border border-white/10 bg-background/40 p-8 md:p-12 shadow-2xl backdrop-blur-xl supports-[backdrop-filter]:bg-background/25"
 				>
-					<motion.h2
+					<motion.div
 						variants={fadeIn('up', 0.2)}
-						className="text-3xl md:text-4xl font-bold mb-4 text-primary"
+						className="mb-6 flex items-center justify-center gap-3 text-xs md:text-sm font-medium uppercase tracking-[0.35em] text-foreground/60"
 					>
-						Engenharia de Software
-					</motion.h2>
+						<span aria-hidden className="h-px w-8 bg-foreground/30" />
+						<span>Engenharia de Software</span>
+						<span aria-hidden className="h-px w-8 bg-foreground/30" />
+					</motion.div>
 
 					<motion.h1
 						variants={fadeIn('up', 0.3)}
-						className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
+						className="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-[0.95] tracking-tight text-foreground drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]"
 					>
-						<span className="text-gradient">Guilherme Meneguelli</span>
+						Guilherme
+						<br />
+						<span className="italic font-normal text-foreground/95">
+							Meneguelli
+						</span>
 					</motion.h1>
+
+					<motion.div
+						variants={fadeIn('up', 0.4)}
+						aria-hidden
+						className="mx-auto mt-8 h-px w-16 bg-foreground/40"
+					/>
 
 					<motion.p
 						variants={fadeIn('up', 0.5)}
-						className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto"
+						className="mt-8 font-display text-lg md:text-xl italic font-light text-foreground/80 max-w-2xl mx-auto leading-relaxed"
 					>
 						Uma vitrine dos meus projetos, habilidades e conquistas no universo da engenharia.
 					</motion.p>
@@ -94,7 +73,7 @@ export function HeroSection() {
 			</div>
 
 			{/* Bottom gradient */}
-			<div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"></div>
+			<div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-[1]"></div>
 		</section>
 	);
 }
