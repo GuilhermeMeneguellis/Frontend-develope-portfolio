@@ -1,25 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSession } from 'next-auth/react';
 
-import { HeroSection } from '@/components/home/hero-section';
-import { AboutPreview } from '@/components/home/about-preview';
-import { ProjectsPreview } from '@/components/home/projects-preview';
-import { SkillsPreview } from '@/components/home/skills-preview';
-import { ContactPreview } from '@/components/home/contact-preview';
+import { PublicHome } from '@/components/home/public-home';
+import { AuthenticatedHome } from '@/components/home/authenticated-home';
 
 export default function Home() {
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		// Simulate loading time
-		const timer = setTimeout(() => {
-			setIsLoading(false);
-		}, 2000);
-
-		return () => clearTimeout(timer);
-	}, []);
+	const { status } = useSession();
+	const isLoading = status === 'loading';
 
 	return (
 		<>
@@ -43,18 +32,13 @@ export default function Home() {
 								transition={{
 									repeat: Infinity,
 									duration: 1,
-									ease: "linear"
+									ease: 'linear',
 								}}
 							/>
 							<motion.p
 								className="mt-4 text-lg"
-								animate={{
-									opacity: [0.5, 1, 0.5],
-								}}
-								transition={{
-									repeat: Infinity,
-									duration: 1.5
-								}}
+								animate={{ opacity: [0.5, 1, 0.5] }}
+								transition={{ repeat: Infinity, duration: 1.5 }}
 							>
 								Carregando...
 							</motion.p>
@@ -63,15 +47,8 @@ export default function Home() {
 				)}
 			</AnimatePresence>
 
-			{!isLoading && (
-				<>
-					<HeroSection />
-					<AboutPreview />
-					<ProjectsPreview />
-					<SkillsPreview />
-					<ContactPreview />
-				</>
-			)}
+			{status === 'authenticated' ? <AuthenticatedHome /> : null}
+			{status === 'unauthenticated' ? <PublicHome /> : null}
 		</>
 	);
 }

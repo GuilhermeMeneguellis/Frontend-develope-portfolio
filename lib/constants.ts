@@ -3,6 +3,12 @@ import type { StaticImageData } from 'next/image';
 import governoPresenteImage from '@/assets/image.png';
 import saudeProMaisImage from '@/assets/imagem2.png';
 import parabellumImage from '@/assets/imagem3.png';
+import cristianoEmpImage from '@/assets/imagem4.png';
+import radioKBumImage from '@/assets/imagem5.jpeg';
+import leapImage from '@/assets/imagem6.png';
+import setboxImage from '@/assets/imagem7.png';
+
+import type { ProjectStatus } from '@/components/ui/project-status-badge';
 
 export const siteConfig = {
 	name: 'Portfólio de Engenharia',
@@ -102,8 +108,17 @@ export type Project = {
 	description: string;
 	image: string | StaticImageData;
 	tags: string[];
+	status: ProjectStatus;
 	link?: string;
 	repo?: string;
+	// Campos opcionais para o modal "propaganda" — se ausentes, a seção correspondente some.
+	tagline?: string;
+	problem?: string;
+	highlights?: string[];
+	stack?: { category: string; items: string[] }[];
+	metrics?: { label: string; value: string }[];
+	role?: string;
+	year?: string;
 };
 
 export const projects: Project[] = [
@@ -113,7 +128,31 @@ export const projects: Project[] = [
 			'Plataforma web desenvolvida com TypeScript, Node.js, Next.js, Nest.js e React, utilizando Neon PostgreSQL como base de dados para sustentar uma aplicação moderna, escalável e orientada a performance.',
 		image: saudeProMaisImage,
 		tags: ['TypeScript', 'Node.js', 'Next.js', 'Nest.js', 'React', 'Neon PostgreSQL'],
+		status: 'launched',
 		link: 'https://www.saudepromais.com.br/',
+		tagline: 'Saúde acessível, do cadastro ao atendimento — tudo em uma plataforma.',
+		problem:
+			'Cooperativas de saúde precisavam de uma plataforma moderna para gerir associados, vendas de planos e atendimento, sem depender de sistemas legados lentos e desconectados. O desafio era entregar uma solução escalável, segura e com experiência fluida tanto para o administrador quanto para o beneficiário final.',
+		highlights: [
+			'Cadastro completo de beneficiários com validação em tempo real',
+			'Dashboard administrativo com métricas de vendas e adesões',
+			'Integração com gateway de pagamento e emissão automática de boletos',
+			'Autenticação multi-perfil (admin, vendedor, beneficiário)',
+			'Deploy serverless com performance otimizada via Neon Postgres',
+		],
+		stack: [
+			{ category: 'Frontend', items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'] },
+			{ category: 'Backend', items: ['Node.js', 'Nest.js', 'REST APIs'] },
+			{ category: 'Banco de dados', items: ['Neon PostgreSQL', 'Prisma ORM'] },
+			{ category: 'Infraestrutura', items: ['Vercel', 'Serverless Functions'] },
+		],
+		metrics: [
+			{ label: 'Tempo médio de cadastro', value: '< 3 min' },
+			{ label: 'Uptime', value: '99.9%' },
+			{ label: 'Ambiente', value: 'Produção' },
+		],
+		role: 'Full Stack Developer',
+		year: '2024',
 	},
 	{
 		title: 'Governo Presente',
@@ -121,7 +160,30 @@ export const projects: Project[] = [
 			'Aplicativo mobile desenvolvido com React Native e Expo, distribuído para Play Store e App Store para ampliar o acesso da população a serviços e funcionalidades institucionais.',
 		image: governoPresenteImage,
 		tags: ['React Native', 'Expo', 'Play Store', 'App Store'],
+		status: 'launched',
 		link: 'https://appbarramansa.com.br/',
+		tagline: 'A prefeitura de Barra Mansa no bolso de cada cidadão.',
+		problem:
+			'A prefeitura precisava aproximar serviços públicos da população sem depender exclusivamente do atendimento presencial. O desafio era entregar um app mobile estável nas duas grandes lojas (Google Play e App Store) que funcionasse para perfis muito diferentes de usuários e integrasse em um único lugar serviços de saúde, educação, protocolos e comunicação institucional.',
+		highlights: [
+			'Publicação em Google Play e App Store com fluxo de release automatizado',
+			'Notificações push para campanhas e alertas municipais',
+			'Integração com APIs internas da prefeitura (protocolos, agendamentos, serviços)',
+			'Interface pensada para diferentes faixas etárias e baixa literacia digital',
+			'Suporte multi-módulo: saúde, educação, tributação e serviços gerais',
+		],
+		stack: [
+			{ category: 'Mobile', items: ['React Native', 'Expo', 'TypeScript'] },
+			{ category: 'Integrações', items: ['REST APIs', 'Push Notifications'] },
+			{ category: 'Distribuição', items: ['Google Play', 'App Store', 'EAS Build'] },
+		],
+		metrics: [
+			{ label: 'Lojas', value: 'iOS + Android' },
+			{ label: 'Abrangência', value: 'Municipal' },
+			{ label: 'Ambiente', value: 'Produção' },
+		],
+		role: 'Mobile Developer',
+		year: '2023',
 	},
 	{
 		title: 'Parabellum Club',
@@ -129,7 +191,154 @@ export const projects: Project[] = [
 			'Plataforma full stack desenvolvida com Next.js e Nest.js, utilizando Docker, MongoDB, PostgreSQL e VPS Ubuntu, com integração à AWS Rekognition para reconhecimento facial.',
 		image: parabellumImage,
 		tags: ['Next.js', 'Nest.js', 'Docker', 'MongoDB', 'PostgreSQL', 'AWS Rekognition'],
+		status: 'launched',
 		link: 'https://parabellumclub.com.br/',
+		tagline: 'Controle de acesso inteligente por reconhecimento facial em tempo real.',
+		problem:
+			'Um clube de tiro esportivo precisava automatizar o controle de acesso dos sócios mantendo total rastreabilidade e segurança. O desafio era integrar reconhecimento facial em tempo real via AWS Rekognition a um sistema completo de gestão — cadastro, agenda, pagamentos e logs — rodando em infraestrutura própria (VPS Ubuntu) com containers Docker para garantir isolamento e reprodutibilidade.',
+		highlights: [
+			'Reconhecimento facial na portaria com AWS Rekognition',
+			'Gestão completa de sócios, planos e pagamentos',
+			'Persistência híbrida: PostgreSQL para dados relacionais + MongoDB para logs',
+			'Deploy em VPS Ubuntu com Docker e Nginx como proxy reverso',
+			'Painel administrativo com auditoria de acessos em tempo real',
+		],
+		stack: [
+			{ category: 'Frontend', items: ['Next.js', 'React', 'TypeScript'] },
+			{ category: 'Backend', items: ['Nest.js', 'Node.js', 'REST APIs'] },
+			{ category: 'Banco de dados', items: ['PostgreSQL', 'MongoDB'] },
+			{ category: 'IA & Visão', items: ['AWS Rekognition'] },
+			{ category: 'Infraestrutura', items: ['Docker', 'Nginx', 'VPS Ubuntu'] },
+		],
+		metrics: [
+			{ label: 'Reconhecimento', value: 'Tempo real' },
+			{ label: 'Deploy', value: 'VPS Ubuntu' },
+			{ label: 'Ambiente', value: 'Produção' },
+		],
+		role: 'Full Stack Developer',
+		year: '2024',
+	},
+	{
+		title: 'Cristiano Emp',
+		description:
+			'Site institucional para um profissional autônomo da construção civil, desenvolvido com Next.js e hospedado na Vercel para garantir performance, credibilidade e contato direto com potenciais clientes.',
+		image: cristianoEmpImage,
+		tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Vercel'],
+		status: 'in-development',
+		link: 'https://cristianoemp.vercel.app/',
+		tagline: 'Obras, reformas e acabamentos com a credibilidade de uma marca digital.',
+		problem:
+			'Profissionais autônomos da construção civil perdem clientes por não terem uma presença online confiável — dependem de WhatsApp, boca a boca ou páginas genéricas em redes sociais. O desafio era entregar um site próprio, moderno e responsivo que transmitisse profissionalismo, apresentasse o portfólio de obras, listasse serviços com clareza e viabilizasse contato direto em um único clique.',
+		highlights: [
+			'Vitrine de serviços com descrições objetivas (obras, reformas, acabamentos)',
+			'Galeria de trabalhos realizados com foco em prova social',
+			'Contato direto via WhatsApp em um clique a partir de qualquer seção',
+			'Design responsivo otimizado para celular (principal porta de entrada do público)',
+			'Deploy contínuo na Vercel com SSL e performance otimizada',
+		],
+		stack: [
+			{ category: 'Frontend', items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'] },
+			{ category: 'Deploy', items: ['Vercel', 'Edge Network', 'SSL automático'] },
+		],
+		metrics: [
+			{ label: 'Foco principal', value: 'Mobile-first' },
+			{ label: 'Canal de contato', value: 'WhatsApp' },
+			{ label: 'Deploy', value: 'Vercel' },
+		],
+		role: 'Full Stack Developer',
+	},
+	{
+		title: 'Rádio KBum',
+		description:
+			'Aplicativo mobile para a Rádio KBum, desenvolvido com React Native e Expo para levar transmissão ao vivo, programação e conteúdo da emissora direto pro bolso do ouvinte.',
+		image: radioKBumImage,
+		tags: ['React Native', 'Expo', 'Streaming', 'Push Notifications'],
+		status: 'in-development',
+		tagline: 'A Rádio KBum tocando onde você estiver — ao vivo, sem perder um segundo.',
+		problem:
+			'Rádios tradicionais vêm perdendo audiência para plataformas de streaming e precisam estar onde o público está: no celular. O desafio era entregar um app nativo leve, com player persistente que não interrompe a transmissão mesmo quando o usuário troca de tela, integração com a programação da emissora e canais diretos de interação com o ouvinte.',
+		highlights: [
+			'Player de streaming ao vivo com controle em background e tela de bloqueio',
+			'Programação semanal com destaque para o programa que está no ar',
+			'Notificações push para programas favoritos e notícias da emissora',
+			'Integração com redes sociais e canal direto de contato com a rádio',
+			'Build multiplataforma (iOS + Android) com Expo e atualizações OTA',
+		],
+		stack: [
+			{ category: 'Mobile', items: ['React Native', 'Expo', 'TypeScript'] },
+			{ category: 'Áudio', items: ['Streaming ao vivo', 'Background Audio'] },
+			{ category: 'Engajamento', items: ['Push Notifications', 'Deep Linking'] },
+			{ category: 'Distribuição', items: ['EAS Build', 'OTA Updates'] },
+		],
+		metrics: [
+			{ label: 'Transmissão', value: 'Ao vivo 24/7' },
+			{ label: 'Plataformas', value: 'iOS + Android' },
+			{ label: 'Atualizações', value: 'OTA' },
+		],
+		role: 'Mobile Developer',
+	},
+	{
+		title: 'LEAP',
+		description:
+			'SaaS para criação e distribuição de unidades de aprendizagem voltadas ao ensino superior, com integração nativa a múltiplos LMS via SCORM e LTI.',
+		image: leapImage,
+		tags: ['SaaS', 'Educação', 'SCORM', 'LTI', 'Next.js', 'TypeScript'],
+		status: 'in-development',
+		tagline:
+			'Conteúdo acadêmico autorado uma vez, publicado em qualquer LMS.',
+		problem:
+			'Instituições de ensino superior enfrentam um gargalo na produção e distribuição de conteúdo digital: autores precisam dominar padrões técnicos como SCORM e LTI, e cada LMS (Moodle, Canvas, Blackboard, Google Classroom) tem suas próprias peculiaridades de integração. O desafio do LEAP é oferecer um ambiente onde o professor foca em criar a unidade de aprendizagem, e a plataforma cuida de empacotar e entregar o conteúdo em qualquer LMS do mercado, mantendo rastreamento de progresso e avaliações.',
+		highlights: [
+			'Editor visual de unidades de aprendizagem sem exigir conhecimento técnico',
+			'Empacotamento automático nos padrões SCORM 1.2, SCORM 2004 e LTI 1.3',
+			'Integração plug-and-play com Moodle, Canvas, Blackboard e outros LMS',
+			'Gestão multi-instituição com controle de autores, cursos e permissões',
+			'Rastreamento de progresso e notas sincronizado de volta ao LMS de origem',
+		],
+		stack: [
+			{ category: 'Frontend', items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'] },
+			{ category: 'Backend', items: ['Node.js', 'Nest.js', 'REST APIs'] },
+			{ category: 'Banco de dados', items: ['PostgreSQL', 'Prisma ORM'] },
+			{ category: 'Padrões de e-learning', items: ['SCORM 1.2 / 2004', 'LTI 1.3', 'xAPI'] },
+			{ category: 'Infraestrutura', items: ['Cloud', 'CDN', 'Multi-tenant'] },
+		],
+		metrics: [
+			{ label: 'Padrões', value: 'SCORM + LTI' },
+			{ label: 'Integração', value: 'Multi-LMS' },
+			{ label: 'Arquitetura', value: 'Multi-tenant' },
+		],
+		role: 'Full Stack Developer',
+	},
+	{
+		title: 'SetBox',
+		description:
+			'Plataforma de apostas peer-to-peer — os usuários apostam entre si, sem "casa" na contraparte. Desenvolvida como SaaS para escalar horizontalmente e suportar múltiplos eventos ao mesmo tempo.',
+		image: setboxImage,
+		tags: ['SaaS', 'P2P', 'Next.js', 'Nest.js', 'TypeScript', 'Real-time'],
+		status: 'launching',
+		link: 'http://srv1457316.hstgr.cloud:8081/',
+		tagline: 'Aposta direto com outro jogador — sem casa, sem margem oculta.',
+		problem:
+			'Casas de aposta tradicionais sempre ocupam a contraparte do apostador, o que significa lucro da casa = perda do usuário. O SetBox inverte essa lógica: a plataforma conecta dois jogadores que querem lados opostos de um mesmo mercado e só fica com uma taxa de serviço transparente. O desafio é orquestrar o matching de apostas em tempo real, garantir liquidação automática dos prêmios e manter a experiência simples mesmo com mercados voláteis.',
+		highlights: [
+			'Mercado peer-to-peer: matching em tempo real entre apostadores',
+			'Liquidação automática dos prêmios ao encerramento do evento',
+			'Sem "casa" na contraparte — taxa de serviço transparente por aposta',
+			'Carteira interna com histórico de apostas, saldo e extratos',
+			'Arquitetura escalável preparada para múltiplos eventos simultâneos',
+		],
+		stack: [
+			{ category: 'Frontend', items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'] },
+			{ category: 'Backend', items: ['Nest.js', 'Node.js', 'REST APIs', 'WebSockets'] },
+			{ category: 'Banco de dados', items: ['PostgreSQL', 'Prisma ORM'] },
+			{ category: 'Infraestrutura', items: ['VPS Hostinger', 'Docker', 'Nginx'] },
+		],
+		metrics: [
+			{ label: 'Modelo', value: 'P2P' },
+			{ label: 'Matching', value: 'Tempo real' },
+			{ label: 'Ambiente', value: 'Staging' },
+		],
+		role: 'Full Stack Developer',
 	},
 ];
 

@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(npm install *)",
-      "Bash(npx tsc *)",
-      "Bash(node -e \"console.log\\('react:', require\\('react/package.json'\\).version\\); console.log\\('react-dom:', require\\('react-dom/package.json'\\).version\\); console.log\\('fiber:', require\\('@react-three/fiber/package.json'\\).version\\); console.log\\('drei:', require\\('@react-three/drei/package.json'\\).version\\); console.log\\('three:', require\\('three/package.json'\\).version\\); try { console.log\\('reconciler:', require\\('react-reconciler/package.json'\\).version\\); } catch\\(e\\) { console.log\\('reconciler: not installed'\\); }\")"
-    ]
-  }
-}

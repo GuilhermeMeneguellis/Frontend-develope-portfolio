@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
-import { LogIn, LogOut, User as UserIcon } from 'lucide-react';
+import { LogIn, LogOut, User as UserIcon, Users } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,6 +14,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { isAdminEmail } from '@/lib/admin';
 
 function initialsFrom(name?: string | null, email?: string | null): string {
 	const source = name || email || '';
@@ -44,6 +45,7 @@ export function UserMenu() {
 	}
 
 	const { user } = session;
+	const isAdmin = isAdminEmail(user.email);
 
 	return (
 		<DropdownMenu>
@@ -70,6 +72,17 @@ export function UserMenu() {
 					) : null}
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
+				{isAdmin ? (
+					<>
+						<DropdownMenuItem asChild>
+							<Link href="/clientes" className="cursor-pointer">
+								<Users className="mr-2 h-4 w-4 text-primary" />
+								<span className="font-medium">Clientes</span>
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+					</>
+				) : null}
 				<DropdownMenuItem asChild>
 					<Link href="/register" className="cursor-pointer">
 						<UserIcon className="mr-2 h-4 w-4" />
